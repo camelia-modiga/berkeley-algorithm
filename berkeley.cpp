@@ -27,8 +27,8 @@ int main(int argc, char *argv[])
 	
 	struct 
 	{
-     int hour;
-     int mins;
+    	int hour;
+    	int mins;
      
 	}procs_time, coord_process;
 	
@@ -120,12 +120,12 @@ int main(int argc, char *argv[])
 			MPI_Barrier(MPI_COMM_WORLD);
 			
 			coordinatordiff = 0;//assign coordinator time difference is 0
-			MPI_Send(&coordinatordiff, 1, MPI_INT, coordinator, 55, MPI_COMM_WORLD); // send time difference of the coordinator which is 0 to the coordinator
+			MPI_Send(&coordinatordiff, 1, MPI_INT, coordinator, 0, MPI_COMM_WORLD); // send time difference of the coordinator which is 0 to the coordinator
 			
 			for(int i=0; i<num_of_proc; i++)
 			{
 			
-				MPI_Recv(&diff,  1,  MPI_INT,  MPI_ANY_SOURCE, 55, MPI_COMM_WORLD, &status);
+				MPI_Recv(&diff,  1,  MPI_INT,  MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &status);
 				
 				diff_process_min[status.MPI_SOURCE] = diff;
 				
@@ -184,7 +184,7 @@ int main(int argc, char *argv[])
 			diff_in_min = min_procs - coordinator_time_mins; // calculate time difference between local process time and the coordinator time
 			printf("Process %d is sending time differential value of %d to process %d\n", rank, diff_in_min, coordinator); 
 			
-			MPI_Send(&diff_in_min, 1, MPI_INT, coordinator, 55, MPI_COMM_WORLD); // send time difference to the coordinator
+			MPI_Send(&diff_in_min, 1, MPI_INT, coordinator, 0, MPI_COMM_WORLD); // send time difference to the coordinator
 			MPI_Recv(&value, 1, MPI_FLOAT, MPI_ANY_SOURCE, 33, MPI_COMM_WORLD, &status); // receive time value which needs to be adjusted from the coordinator
 			
 			printf("Process %d has received the clock adjustment value of %f\n", rank, value); // display the adjustment value for each process
